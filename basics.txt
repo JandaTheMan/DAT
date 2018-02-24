@@ -67,3 +67,5 @@ Git collaborations typically follows this order:
     Push your branch up to the remote for review:
     git push origin <feaatureNameBranch>
 
+Jordi Martí Janda 24/02/2018
+
