@@ -50,6 +50,7 @@ git remote  -v					->lists a Git project's remotes.
 git merge origin/master 			->Merge your local with origin/master remote branch.
 
 git push origin <branch_name>			->Pushes a local branch named branch_name to the origin remote.
+git push <remote_name> --delete <branch_name>	>Deletes the branch <branch_name> from the remote location
 
 Git collaborations typically follows this order:
 
