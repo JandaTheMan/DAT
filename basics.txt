@@ -1,29 +1,69 @@
 Git Structure:
     A Working Directory: where you'll be doing all the work: creating, editing, deleting and organizing files(Usually local directory)
-    A Staging Area: where you'll list changes you make to the working directory			(Local diectory after runing some commands)
+    A Staging Area: where you'll list changes you make to the working directory	(Local diectory after runing "add command", tracked project)
     A Repository: where Git permanently stores those changes as different versions of the project(Server where your will store data in)
 
 
 Basic commands:
 
-git init		->The command sets up all the tools Git needs to begin tracking changes made to the project.
-git status		->You can check the status of the changes maked in the Working directory.
-git add filename	->The command adds the files to the staggin area(now git is tracking these files)[YOU CAN ADD MORE FILES IN ONE COMMAND]
-git diff filename	->It shows the difference of the file that you have in your local repo and the one in the stagging area
-git commit -m "desc."	->A commit permanently stores changes from the staging area inside the repository.
-git log			->Commits are stored chronologically in the repository and can be viewed with this command
-(The commits, it description, autor, date and hash of the commit will appear)
-git show HEAD		->shows the commit you're working with.
-git checkout HEAD filename->will restore the file in your working directory to look exactly as it did when you last made a commit. 
-git reset <commit hash> <filename> specific file
+git init					->The command sets up all the tools Git needs to begin tracking changes made to the project.
 
-git reset HEAD filename	->We can unstage file from the staging area using
-git reset commit_SHA	->This command works by using the first 7 characters of the SHA of a previous commit. For example, if the SHA of the previous commit is 5d692065cf51a2f50ea8e7b19b5a7ae512f633ba.
-git branch	->which branch am I on
-git branch new_branch	->create the new_branch branch
-git checkout branch_name->switch to the new_branch branch
-git merge branch_name	->merging with the master branch
-git branch -d branch_name	->delete branches
-git fetch 	-> An easy way to see if changes have been made to the remote and bring the changes down to your local copy 
+git status					->You can check the status of the changes maked in the Working directory.
 
+git add filename				->The commands add the file to the stagging area.(Now git is tracking this file)
+						[YOU CAN ADD MORE FILES IN ONE COMMAND]
+
+git diff filename				->It shows the difference of the file that you have in your local repo and the one in the 							stagging area
+
+git commit -m "Commit message"			->A commit permanently stores changes from the staging area inside the repository.
+
+git log						->Commits are stored chronologically in the repository and can be viewed with this command.
+						(The commits, it description, autor, date and hash of the commit will appear)
+
+git show HEAD					->shows the commit you're working with.
+
+git checkout HEAD filename			->will restore the file in your working directory to look exactly as it did when you last made 							a commit. 
+
+git reset <commit hash> <filename>		->will restore the file in your working directory to look exactly as it did when you made 							the commit with <commit hash> has.
+
+git reset HEAD filename				->We can unstage file from the staging area using.(Like deleting)
+
+git reset commit_SHA				->This command works by using the first 7 characters of the SHA of a previous commit.        							For example: if the SHA of the previous commit is 5d692065cf51a2f50ea8e7b19b5a7ae512f633ba.
+						It restore the repo to the commit with commit_SHA hash
+
+git branch					->which branch am I on
+
+git branch new_branch				->create the new_branch branch
+
+git checkout branch_name			->switch to the new_branch branch
+
+git merge branch_name				->merging with the branch_name branch
+
+git branch -d branch_name			->delete bran_name
+
+git clone remote_location local_location	->clone in your local repo local_location the repo in the remote_location
+git fetch  					->An easy way to see if changes have been made to the remote and bring the changes down to your 						local copy. It does not merge this change, you can merge this changes by using the command:
+						git merge origin/master
+
+git remote  -v					->lists a Git project's remotes. 
+
+git merge origin/master 			->Merge your local with origin/master remote branch.
+
+git push origin <branch_name>			->Pushes a local branch named branch_name to the origin remote.
+
+Git collaborations typically follows this order:
+
+    Fetch and merge changes from the remote:	
+    git pull or git fetch+git merge origin/master
+    
+    Create a branch to work on a new project feature:
+    git branch <featureNameBranch>
+
+    Develop the feature on your branch and commit your work
+
+    Fetch and merge from the remote again:
+    git pull or git fetch+git merge origin/master  
+ 
+    Push your branch up to the remote for review:
+    git push origin <feaatureNameBranch>
 
