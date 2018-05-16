@@ -1,0 +1,114 @@
+
+#include "view.hpp"
+#include "paths.hpp"
+#include "model.hpp"
+
+
+std::string escapeHtml(const std::string& text)
+{
+    std::string result;
+    for (unsigned i = 0; i < text.size(); i++) {
+        char c = text[i];
+        switch (c) {
+            case '<': result += "&lt;"; break;
+            case '&': result += "&amp;"; break;
+            case '>': result += "&gt;"; break;
+            case '\"': result += "&quot;"; break;
+            case '\'': result += "&apos;"; break;
+            default:  result += c; break;
+        }
+    }
+    return result;
+}
+
+std::string layoutPage(const dat_base::Maybe<std::string> & userId, const std::string& title, const std::string& body)
+{
+    std::string html;
+    html = "\
+<html><head>\n\
+  <title>DAT - Pr&agrave;ctica 2. " + escapeHtml(title) + "</title>\n\
+</head><body>\n\
+<h1>Un sistema de correu (simple) per la WEB</h1>\n";
+    if (dat_base::isJust(userId)) {
+        html.append("\
+<center><h1>" + escapeHtml(userName(dat_base::fromJust(userId))) + "</h1></center>\n\
+<form method='POST' action='" + APPROOT + LOGOUT_PATH + "'>\n\
+  <p align='right'><input type='submit' name='quit' value='Tanca sessio'></p>\n\
+</form>\n");
+    }
+    html.append("<hr>\n");
+    html.append(body);
+    html.append("</body></html>\n");
+    return html;
+}
+
+std::string inboxBody(const std::string& userId)
+{
+    std::string html;
+    html.append("...PENDENT DE COMPLETAR PER L'ESTUDIANT...");
+    std::list<Message> msgs = messagesByTo(userId);
+    html.append("\
+<form method='POST' action='#'>\n\
+  <table align='center' border='1'>\n\
+    <tr><th>&nbsp;</th> <th>De</th> <th>Data</th> <th>Assumpte</th></tr>\n");
+    for (auto mit = msgs.cbegin(); mit != msgs.cend(); ++mit) {
+        time_t date = mit->date;
+        std::string s_date = asctime(localtime(&date));
+        html.append("\
+    <tr><td><input type=checkbox name='msgId' value='" + mit->id + "'></td>\n\
+        <td>...</td><td>...</td>\n\
+        <td><a href='" + APPROOT + MSG_PATH(mit->id) + "'>" + escapeHtml(mit->subject) + "</a></td></tr>\n");
+    }
+    html.append("\
+...PENDENT DE COMPLETAR PER L'ESTUDIANT...");
+    return html;
+}
+
+std::string errorPage (const std::string& errMsg)
+{
+    std::string html = "\
+    <html><head>\n\
+      <title>DAT - Pr&agrave;ctica 2. Error </title>\n\
+    </head><body>\n\
+    <center>\n\
+      <h2>ERROR</h2>\n\
+      <h3><FONT COLOR='red'>Error"+errMsg+"</FONT></h3>\n\
+    </center>\n\
+    </body></html>\n";
+    return html;
+}
+
+/**std::string loginBody(const std::string& errMsg)
+{
+
+}
+**/
+
+std::string composeBody(const std::string& userId)
+{
+    std::string html = "\
+    <html><head>\n\
+      <title>DAT - Pr&agrave;ctica 2.NOError </title>\n\
+    </head><body>\n\
+    <center>\n\
+      <h2>ERROR</h2>\n\
+      <h3><FONT COLOR='red'>Error"+errMsg+"</FONT></h3>\n\
+    </center>\n\
+    </body></html>\n";
+    return html;
+}
+
+std::string messageBody(const Message& msg)
+{
+    std::string html = "\
+    <html><head>\n\
+      <title>DAT - Pr&agrave;ctica 2. NOError </title>\n\
+    </head><body>\n\
+    <center>\n\
+      <h2>ERROR</h2>\n\
+      <h3><FONT COLOR='red'>Error"+errMsg+"</FONT></h3>\n\
+    </center>\n\
+    </body></html>\n";
+    return html;
+}
+

@@ -1,0 +1,96 @@
+
+#include "model.hpp"
+#include <dat_db/ddb.hpp>
+#include <ctime>
+
+using namespace std;
+using namespace dat_base;
+using namespace dat_db;
+
+const string db_root("mail-db");
+
+Maybe<string> login (const string& name, const string& passwd)
+{
+    DBConnection dbc(db_root);
+    try{    
+        dbc.select("users", "name", name);
+        if(db.next()){
+            if(dbc.get("password")==passwd) return Just(dbc.get("id"));
+        }else{
+    	    return Nothing();
+        }
+    }catch(const  DBException& e){
+    }
+}
+
+string userName (const string& userId)
+{
+    DBConnection dbc(db_root);
+    try{    
+        dbc.select("users", "id", userId);
+        if(db.next()){
+            if(dbc.get("id")==userId) return dbc.get("name");
+        }
+    }catch(const  DBException& e){
+    }
+        return nullptr;
+}
+
+list<Message> messagesByTo(const string& toId)
+{
+    DBConnection dbc(db_root);
+    dbc.select("messages", "to", toId);
+    list<Message> msgs;
+    while (dbc.next()) {
+        Message m;
+        m.id = dbc.get("id");
+        m.from = dbc.get("from");
+        m.to = toId;
+        m.date = stol(dbc.get("date"));
+        m.subject = dbc.get("subject");
+        m.content = dbc.get("content");
+        msgs.push_back(m);
+    }
+    return msgs;
+}
+
+void deleteMessage (const std::string& toId, const std::string& msgId)
+{
+    try{
+        //Connection with the database
+        DBConnection dbc(db_root);
+        //Creation of an intern list with all messages of the user
+        dbc.delete_rows("messages","id",msgId);
+    }catch(const  DBException& e){
+   
+    }
+}
+
+void deleteMessages (const std::string& toId, const std::list<std::string>& msgIds)
+{
+    //Iteration of the list with message id's
+    for(list<int>::iterator it=msgIds.begin(); it!=msgIds.end(); ++it)
+    {
+	//for each id, the rutine incove deleteMessage that delete this message from the data base
+	deleteMessage(toId, it);
+    }
+}
+
+bool sendMessage (const std::string& fromId, const std::string& toName, const std::string& subject, const std::string& content)
+{
+    list<string> params;
+    list.push_back(fromId);
+    list.push_back(toName);
+    time_t curr_time;
+    time(&curr_time);
+    string date = asctime(localtime(&curr_time));
+    list.push_back(date);
+    list.push_back(subject);
+    list.push_back(content);
+    DBConnection dbc(db_root);
+    try{
+	dbc.insert("messages",params);
+    }catch(const  DBException& e){
+    }
+}
+

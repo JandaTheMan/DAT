@@ -1,0 +1,44 @@
+
+  <ul class="nav nav-tabs">
+    <li class="active">
+        <a href="@{InboxR}"><strong>Inbox</strong></a>
+    </li>
+    <li>
+        <a href="@{ComposeR}"><strong>Compose</strong></a>
+    </li>
+  </ul>
+
+  <h3>Missatges rebuts</h3>
+
+  $if{ received.size()==0 }
+    <b>No hi ha missatges rebuts</b>
+    $else
+  
+<form method='POST' action="@{InboxR}">
+    <table class='table table-striped table-condensed'>
+      <tbody>
+
+    <table class="table">
+      <thead><tr>
+        <th>De</th>
+        <th>Data</th>
+        <th>Assumpte</th>
+      </tr></thead>
+      <tbody>
+      $forall{ message :: Entity<Message> <- received }
+        <tr>
+          <td><input type=checkbox name='msgId' value="#{message.id}"></td>
+          <td>#{new java.text.SimpleDateFormat("d MMMM yyyy, H:mm").format(message.value.date)}</td>
+          <td><a href="@{MessageR(message.id)}">#{message.value.subject}</a></td>
+        </tr>
+      $end
+      </tbody>
+    </table>
+	
+	<p><input type=submit name='delete' value='Elimina seleccionats'></p>
+		</form>
+	    <!-- footer -->
+	    <hr size='1' noshade='' width='100%'>
+	
+  $end
+

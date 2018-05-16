@@ -1,0 +1,39 @@
+	  <ul class="nav nav-tabs">
+	    <li class="active">
+		<a href="@{InboxR}"><strong>Inbox</strong></a>
+	    </li>
+	    <li>
+		<a href="@{ComposeR}"><strong>Compose</strong></a>
+	    </li>
+	  </ul>
+
+
+        <h3>Missatge rebut:</h3>
+        <div class="jumbotron">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>De</th>
+                        <td><em>#{userFrom.getName()}</em>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Data</th>
+                        <td>#{m.getDate().toString()}</td>
+                    </tr>
+                    <tr>
+                        <th>Assumpte</th>
+                        <td>#{m.getSubject()}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div><pre>#{m.getText()}</pre>
+        <form method="POST" action="@{MessageR(mid)}">
+            <input type="hidden" name="msgId" value="NO IMPORTA">
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default" name="delete">Elimina</button>
+                </div>
+            </div>
+        </form>
+        <hr size="1" noshade="" width="100%">

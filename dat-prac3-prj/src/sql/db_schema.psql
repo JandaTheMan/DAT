@@ -1,0 +1,23 @@
+
+CREATE SEQUENCE "id_generator";
+
+
+CREATE TABLE "users" (
+	"id" integer PRIMARY KEY,
+	"name" text NOT NULL,
+	"password" text NOT NULL
+);
+
+
+CREATE TABLE "messages" (
+	"id" integer PRIMARY KEY,
+	"from_id" integer NOT NULL,
+	"to_id" integer NOT NULL,
+	"date" integer NOT NULL,
+	"subject" text NOT NULL,
+	"text" text NOT NULL,
+ 	FOREIGN KEY("from_id") REFERENCES "users" ("id"),
+ 	FOREIGN KEY("to_id") REFERENCES "users" ("id")
+);
+
+
