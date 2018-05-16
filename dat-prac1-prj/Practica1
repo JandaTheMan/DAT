@@ -1,0 +1,118 @@
+3. Al canviar de .html a .txt, ens apareix el mateix document sense format html ja que canvia el tipus MIME, que ho canvia el servidor i no el navegador.
+
+4. Per tal que es pugui fer bé, ha de ser una URL relativa
+
+5.Arxiu cgi-hora.cgi :
+
+#!/bin/sh
+
+# disable filename globbing
+set -f
+
+echo "Content-Type: text/html"
+echo
+
+echo "<HTML><HEAD>"
+echo "<TITLE>CGI que dona la hora...</TITLE>"
+echo "</HEAD>"
+echo "<BODY>"
+echo "<H1>Avui es "
+date "+%A %d de %B del %Y"
+echo "</H1>"
+echo "<H1>I s&oacute;n les "
+date "+%T"
+echo "</H1>"
+echo "</BODY>"
+echo "</HTML>"
+
+6. Quan s'envia una petició a la URL es retorna el contingut escrit en cgi-hora.cgi en comptes de mostrar una pagina.
+
+
+
+SEGONA PART
+
+1.Fem: telnet soft0.upc.edu 80
+
+I després: /~ldatusr18 HTTP/1.0
+I estarà esperant la capçalera que li passem. Com no li passarem cap capçalera, fem intro i ens mostrarà la petició GET que hem fet, la línea en blanc i l'arxiu ens el mostrarà. Això és el resultat
+
+HTTP/1.1 200 OK
+Date: Wed, 28 Feb 2018 14:32:13 GMT
+Server: Apache
+Last-Modified: Wed, 28 Feb 2018 14:13:29 GMT
+ETag: "3b1-5664658f71cf8"
+Accept-Ranges: bytes
+Content-Length: 945
+Vary: Accept-Encoding
+Connection: close
+Content-Type: text/html
+
+<!DOCTYPE html>
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+   <TITLE>El tí­tol de la vostra pàgina</TITLE>
+</HEAD>
+<!-- Background white, links blue (unvisited), navy (visited), red (active) -->
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#000080" ALINK="#FF0000">
+
+<H2>Tí­tols (capçaleres) de diferents nivells (H1/H2/H3/H4/H5/H6)</H2>
+
+<H3>Un títol de nivell inferior</H3>
+
+<P>Paràgrafs de text
+(múltiples lí­nies).
+<BR>
+Lí­nia separada
+</P>
+
+<P>Llista ordenada (numerada):</P>
+<OL>
+<LI> Item 1</LI>
+<LI> Item 2</LI>
+</OL>
+
+<P>Llista no numerada:</P>
+<UL>
+<LI> Item 1</LI>
+<LI> Item 2</LI>
+</UL>
+
+<P>Enllaç (<em>hyperlink</em>) a una altra URL. Per exemple a la <A
+HREF="http://soft0.upc.es/web/">p&agrave;gina principal</A>.</P>
+
+<a href="practica1.2/example.html">Vés a pàgina d'exemple</a>
+<a href="practica1.2/cgi-hora.cgi">Mira l'hora actual</a>
+
+</BODY>
+</HTML>
+
+
+
+2. 
+
+
+
+TERCERA PART
+
+codi:
+#!/bin/sh
+
+
+#Agafa el valor de nums (on s'escriuen les visites), l'incrementa i el retorna com a part de l'arxiu html
+val=$(cat nums)
+echo "$(( $val +1 ))" > nums
+
+vis=$(cat nums)
+
+echo "Content-Type: text/html"
+echo
+
+echo "<HTML><HEAD>"
+echo "<TITLE>Numero visites</TITLE>"
+echo "</HEAD>"
+echo "<BODY>"
+echo "<H1>Numero visites : $vis "
+echo "</H1>"
+echo "</BODY>"
+echo "</HTML>"
